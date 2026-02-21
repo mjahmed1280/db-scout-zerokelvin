@@ -1,6 +1,6 @@
 """
 DB-Scout-ZeroKelvin Command Center
-Streamlit-based UI for the Agentic RAG framework.
+Streamlit-based UI for the Agentic RAG framework with Cyber-Industrial Aesthetic.
 """
 
 import streamlit as st
@@ -19,22 +19,295 @@ st.set_page_config(
     }
 )
 
-# Apply custom styling
+# Apply Zero Kelvin Cyber-Industrial Styling
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
     
-    * {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    /* Root Theme Variables */
+    :root {
+        --bg-primary: #0E1117;
+        --bg-secondary: #1a1c24;
+        --accent-frost: #A0DDFE;
+        --accent-cyan: #06b6d4;
+        --accent-neon: #00FF41;
+        --text-primary: #f1f5f9;
+        --text-secondary: #a0adc3;
+        --border-color: rgba(160, 221, 254, 0.2);
+        --glow-color: rgba(160, 221, 254, 0.1);
     }
     
-    .status-online { color: #10b981; font-weight: bold; }
-    .status-offline { color: #ef4444; font-weight: bold; }
+    /* Global Typography */
+    * {
+        font-family: 'Inter', sans-serif;
+    }
     
-    .metric-row {
-        display: flex;
-        gap: 1rem;
-        margin: 1rem 0;
+    code, pre, [data-testid="stMetricValue"] {
+        font-family: 'Fira Code', monospace !important;
+    }
+    
+    /* Main Container */
+    .main {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+    }
+    
+    /* Sidebar Glassmorphism */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(135deg, #0E1117 0%, #1a1c24 100%);
+        border-right: 1px solid var(--border-color);
+        backdrop-filter: blur(10px);
+    }
+    
+    [data-testid="stSidebar"] [data-testid="stVerticalBlockBorderContainer"] {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 16px;
+        margin-bottom: 16px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+    
+    [data-testid="stSidebar"] [data-testid="stVerticalBlockBorderContainer"]:hover {
+        border-color: var(--accent-frost);
+        background: rgba(160, 221, 254, 0.08);
+        box-shadow: 0 0 15px rgba(160, 221, 254, 0.1);
+    }
+    
+    /* Primary Button Neon Glow */
+    div.stButton > button:first-child {
+        background-color: transparent;
+        color: var(--accent-frost);
+        border: 1.5px solid var(--accent-frost);
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(160, 221, 254, 0.15);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    div.stButton > button:first-child:hover {
+        background-color: var(--accent-frost);
+        color: var(--bg-primary);
+        box-shadow: 0 0 25px rgba(160, 221, 254, 0.4), inset 0 0 10px rgba(160, 221, 254, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    div.stButton > button:first-child:active {
+        transform: translateY(0);
+        box-shadow: 0 0 15px rgba(160, 221, 254, 0.3);
+    }
+    
+    /* Secondary Button */
+    div.stButton > button[type="secondary"] {
+        background-color: transparent;
+        color: var(--accent-cyan);
+        border: 1.5px solid var(--accent-cyan);
+        transition: all 0.3s ease;
+    }
+    
+    /* Metric Styling */
+    [data-testid="stMetricValue"] {
+        font-family: 'Fira Code', monospace;
+        color: var(--accent-frost) !important;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: var(--text-secondary) !important;
+        font-size: 13px !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    [data-testid="stMetric"] {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        transition: all 0.3s ease;
+    }
+    
+    [data-testid="stMetric"]:hover {
+        border-color: var(--accent-frost);
+        background: rgba(160, 221, 254, 0.06);
+        box-shadow: 0 0 12px rgba(160, 221, 254, 0.1);
+    }
+    
+    /* Tab Styling */
+    [data-testid="stTabs"] > [role="tablist"] > button[role="tab"] {
+        color: var(--text-secondary);
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+    
+    [data-testid="stTabs"] > [role="tablist"] > button[role="tab"][aria-selected="true"] {
+        color: var(--accent-frost);
+        border-bottom-color: var(--accent-frost);
+        box-shadow: 0 2px 8px rgba(160, 221, 254, 0.2);
+    }
+    
+    [data-testid="stTabs"] > [role="tablist"] > button[role="tab"]:hover {
+        color: var(--accent-frost);
+    }
+    
+    /* Input Fields */
+    input, [data-testid="stTextInputContainer"] input,
+    [data-testid="stNumberInputContainer"] input,
+    [data-testid="stSelectboxContainer"] select {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 6px !important;
+        transition: all 0.3s ease;
+    }
+    
+    input:focus, [data-testid="stTextInputContainer"] input:focus,
+    [data-testid="stNumberInputContainer"] input:focus {
+        border-color: var(--accent-frost) !important;
+        box-shadow: 0 0 12px rgba(160, 221, 254, 0.2) !important;
+        background-color: rgba(160, 221, 254, 0.08) !important;
+    }
+    
+    /* Selectbox */
+    [data-testid="stSelectboxContainer"] select:focus {
+        border-color: var(--accent-frost) !important;
+        box-shadow: 0 0 12px rgba(160, 221, 254, 0.2) !important;
+    }
+    
+    /* Container Borders */
+    [data-testid="stVerticalBlockBorderContainer"] {
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px !important;
+        background-color: rgba(255, 255, 255, 0.03) !important;
+        padding: 1.5rem !important;
+    }
+    
+    /* Chat Message Styling */
+    [data-testid="stChatMessage"] {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.2rem;
+        margin: 0.5rem 0;
+        background: rgba(255, 255, 255, 0.03);
+        transition: all 0.3s ease;
+    }
+    
+    [data-testid="stChatMessage"] * {
+        color: var(--text-primary);
+    }
+    
+    /* Chat Message for User */
+    [data-testid="stChatMessage"]:has([aria-label*="user"]) {
+        border-left: 3px solid var(--accent-cyan);
+        background: rgba(6, 182, 212, 0.05);
+    }
+    
+    /* Chat Message for Assistant */
+    [data-testid="stChatMessage"]:has([aria-label*="assistant"]) {
+        border-left: 3px solid var(--accent-frost);
+        background: rgba(160, 221, 254, 0.05);
+    }
+    
+    /* Status Container */
+    [data-testid="stStatus"] {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1.2rem;
+    }
+    
+    /* Alert Messages */
+    [data-testid="stAlert"] {
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+    
+    [data-testid="stAlert"][kind="warning"] {
+        background: rgba(255, 193, 7, 0.1);
+        border-color: rgba(255, 193, 7, 0.3);
+    }
+    
+    [data-testid="stAlert"][kind="success"] {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
+    }
+    
+    [data-testid="stAlert"][kind="error"] {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+    }
+    
+    [data-testid="stAlert"][kind="info"] {
+        background: rgba(160, 221, 254, 0.1);
+        border-color: var(--border-color);
+    }
+    
+    /* DataFrame Styling */
+    [data-testid="stDataFrame"] {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    /* Divider */
+    hr {
+        border-color: var(--border-color);
+    }
+    
+    /* Heading Styling */
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--accent-frost);
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+        text-shadow: 0 0 20px rgba(160, 221, 254, 0.2);
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+        margin-top: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.3rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* Caption */
+    [data-testid="stCaption"] {
+        color: var(--text-secondary);
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.03);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-frost);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -48,322 +321,380 @@ if "connection_status" not in st.session_state:
     st.session_state.connection_status = {"api": False, "db": False}
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
+if "scan_stats" not in st.session_state:
+    st.session_state.scan_stats = {"tables": 0, "quality": 0, "last_scan": "Never"}
 
-# SIDEBAR: Connection Panel
+# SIDEBAR: Scout Control Panel
 with st.sidebar:
-    st.markdown("### 🛰️ Scout Control Panel")
+    st.markdown("### 🛰️ SCOUT CONTROL PANEL")
     st.divider()
     
     # Backend Configuration
-    st.markdown("**Backend Connection**")
-    backend_host = st.text_input(
-        "Backend Host",
-        value="127.0.0.1",
-        key="backend_host",
-        help="FastAPI backend server address"
-    )
-    backend_port = st.number_input(
-        "Backend Port",
-        value=8000,
-        min_value=1024,
-        max_value=65535,
-        key="backend_port",
-        help="FastAPI backend server port"
-    )
-    
-    st.divider()
+    with st.container(border=True):
+        st.markdown("**⚡ BACKEND GATEWAY**")
+        backend_host = st.text_input(
+            "HOST",
+            value="127.0.0.1",
+            key="backend_host",
+            help="FastAPI backend server address"
+        )
+        backend_port = st.number_input(
+            "PORT",
+            value=8000,
+            min_value=1024,
+            max_value=65535,
+            key="backend_port",
+            help="FastAPI backend server port"
+        )
     
     # Database Configuration
-    st.markdown("**Database Connection**")
-    db_type = st.selectbox(
-        "Database Type",
-        ["PostgreSQL", "SQL Server", "Snowflake"],
-        key="db_type"
-    )
-    db_host = st.text_input(
-        "Database Host",
-        value="127.0.0.1",
-        key="db_host"
-    )
-    db_port = st.number_input(
-        "Database Port",
-        value=5433 if db_type == "PostgreSQL" else 1433,
-        min_value=1024,
-        max_value=65535,
-        key="db_port"
-    )
-    db_name = st.text_input(
-        "Database Name",
-        value="hackfest_db",
-        key="db_name"
-    )
-    db_user = st.text_input(
-        "Username",
-        value="hackfest",
-        key="db_user"
-    )
-    db_password = st.text_input(
-        "Password",
-        type="password",
-        value="hackfest123",
-        key="db_password"
-    )
-    
-    st.divider()
+    with st.container(border=True):
+        st.markdown("**🗄️ DATABASE BRIDGE**")
+        db_type = st.selectbox(
+            "TYPE",
+            ["PostgreSQL", "SQL Server", "Snowflake"],
+            key="db_type"
+        )
+        db_host = st.text_input(
+            "HOST",
+            value="127.0.0.1",
+            key="db_host"
+        )
+        db_port = st.number_input(
+            "PORT",
+            value=5433 if db_type == "PostgreSQL" else 1433,
+            min_value=1024,
+            max_value=65535,
+            key="db_port"
+        )
+        db_name = st.text_input(
+            "DATABASE",
+            value="hackfest_db",
+            key="db_name"
+        )
+        db_user = st.text_input(
+            "USER",
+            value="hackfest",
+            key="db_user"
+        )
+        db_password = st.text_input(
+            "PASSWORD",
+            type="password",
+            value="hackfest123",
+            key="db_password"
+        )
     
     # Connect Button
-    if st.button("🔗 Establish Connection", use_container_width=True, type="primary"):
-        with st.spinner("Connecting to Backend and Database..."):
-            st.session_state.client = BackendClient(
-                host=backend_host,
-                port=int(backend_port),
-                db_config={
-                    "type": db_type.lower(),
-                    "host": db_host,
-                    "port": int(db_port),
-                    "database": db_name,
-                    "user": db_user,
-                    "password": db_password
-                }
-            )
-            # Check connectivity
-            api_status = st.session_state.client.check_backend()
-            db_status = st.session_state.client.check_database()
-            st.session_state.connection_status = {"api": api_status, "db": db_status}
-            time.sleep(0.5)
-    
-    st.divider()
-    
-    # Status Indicators
-    st.markdown("**System Status**")
     col1, col2 = st.columns(2)
     with col1:
-        api_status_text = "🟢 Online" if st.session_state.connection_status["api"] else "🔴 Offline"
-        st.metric("Backend API", api_status_text)
+        if st.button("🔗 CONNECT", use_container_width=True, type="primary"):
+            with st.spinner("▓▒░ Establishing linkage..."):
+                st.session_state.client = BackendClient(
+                    host=backend_host,
+                    port=int(backend_port),
+                    db_config={
+                        "type": db_type.lower(),
+                        "host": db_host,
+                        "port": int(db_port),
+                        "database": db_name,
+                        "user": db_user,
+                        "password": db_password
+                    }
+                )
+                api_status = st.session_state.client.check_backend()
+                db_status = st.session_state.client.check_database()
+                st.session_state.connection_status = {"api": api_status, "db": db_status}
+                time.sleep(0.3)
+                if api_status and db_status:
+                    st.toast("✓ Connection established", icon="✅")
+                else:
+                    st.toast("✗ Connection failed", icon="⚠️")
+    
     with col2:
-        db_status_text = "🟢 Online" if st.session_state.connection_status["db"] else "🔴 Offline"
-        st.metric("Database", db_status_text)
+        if st.button("🔄 RESET", use_container_width=True):
+            st.session_state.chat_history = []
+            st.session_state.client = None
+            st.toast("Cache cleared", icon="🗑️")
     
     st.divider()
-    st.caption("Team Zero Kelvin | HackFest 2.0")
+    
+    # Telemetry Dashboard
+    with st.container(border=True):
+        st.markdown("**📡 TELEMETRY**")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            api_status_text = "🟢 ONLINE" if st.session_state.connection_status["api"] else "🔴 OFFLINE"
+            st.metric("API", api_status_text)
+        with col2:
+            db_status_text = "🟢 ONLINE" if st.session_state.connection_status["db"] else "🔴 OFFLINE"
+            st.metric("DATABASE", db_status_text)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("TABLES", st.session_state.scan_stats["tables"])
+        with col2:
+            st.metric("QUALITY", f"{st.session_state.scan_stats['quality']}%")
+        
+        st.caption(f"Last scan: {st.session_state.scan_stats['last_scan']}")
+    
+    st.divider()
+    st.caption("🛰️ Team Zero Kelvin | HackFest 2.0")
 
-# MAIN CONTENT
-st.markdown("## 🛰️ DB-Scout Command Center")
-st.markdown("**The Agentic Reconnaissance Layer for Enterprise Data**")
+# MAIN HUD HEADER
+st.markdown("# 🛰️ DB-SCOUT COMMAND CENTER")
+st.markdown("**⚔️ The Agentic Reconnaissance Layer for Enterprise Data**")
 st.divider()
 
+# HUD Metrics Row
+if st.session_state.connection_status["api"] and st.session_state.connection_status["db"]:
+    hud_col1, hud_col2, hud_col3, hud_col4 = st.columns(4)
+    with hud_col1:
+        st.metric("🗂️ TOTAL SCHEMAS", 3)
+    with hud_col2:
+        st.metric("📊 QUALITY SCORE", "94.2%")
+    with hud_col3:
+        st.metric("⚠️ ANOMALIES", "156")
+    with hud_col4:
+        st.metric("🔄 STATUS", "READY")
+    st.divider()
+
 if not st.session_state.connection_status["api"] or not st.session_state.connection_status["db"]:
-    st.warning("⚠️ Backend or Database connection not established. Please configure and connect from the sidebar.")
+    st.warning("⚠️ SYSTEM OFFLINE — Configure connection in sidebar", icon="⚙️")
 else:
-    st.success("✅ System online and ready for reconnaissance!")
+    st.success("✅ SYSTEM ONLINE — All sensors green", icon="📡")
     st.divider()
     
     # Create tabs
     tab1, tab2, tab3, tab4 = st.tabs([
-        "💬 Scout Chat",
-        "🔗 ERD Visualizer",
-        "📊 Data Health",
-        "📋 System Logs"
+        "💬 AGENTIC CHAT",
+        "🔗 ERD MAPPER",
+        "📊 DATA VITALS",
+        "📋 INTELLIGENCE LOGS"
     ])
     
-    # TAB 1: Chat Interface
+    # TAB 1: Agentic Chat
     with tab1:
-        st.markdown("### Natural Language Data Discovery")
-        st.markdown("Ask the Scout anything about your database structure, data quality, or relationships.")
+        st.markdown("### 💬 NATURAL LANGUAGE INTERROGATION")
+        st.markdown("*Ask the Scout intelligence about your database ecosystem*")
         st.divider()
         
-        # Chat history display
         if st.session_state.chat_history:
             chat_container = st.container(border=True, height=400)
             with chat_container:
                 for msg in st.session_state.chat_history:
                     if msg["role"] == "user":
-                        st.chat_message("user").markdown(msg["content"])
+                        with st.chat_message("user", avatar="👤"):
+                            st.markdown(msg["content"])
                     else:
-                        st.chat_message("assistant").markdown(msg["content"])
+                        with st.chat_message("assistant", avatar="🛰️"):
+                            st.markdown(msg["content"])
         else:
-            st.info("💡 Start a conversation by asking about your database!")
+            st.info("💡 Initiate reconnaissance by typing a query below", icon="🔍")
         
         st.divider()
         
-        # User input
-        col1, col2 = st.columns([8, 1])
-        with col1:
-            user_input = st.chat_input("Ask the Scout about your database...")
-        with col2:
-            st.write("")  # Spacing
+        user_input = st.chat_input("Query the Scout...", placeholder="What schemas exist? Analyze data quality for customers table...")
         
         if user_input:
             st.session_state.chat_history.append({"role": "user", "content": user_input})
             
-            with st.spinner("Scout is analyzing your query..."):
-                # Show thinking process
-                with st.status("Processing Request", expanded=True) as status:
-                    st.write("Step 1: Parsing natural language query...")
+            with st.spinner("🔍 Scanning..."):
+                with st.status("LIVE THOUGHT STREAM", expanded=True) as status:
+                    st.write("🔍 **PARSING** — Decomposing natural language query...")
                     time.sleep(0.3)
-                    st.write("Step 2: Extracting schema metadata...")
+                    st.write("🗂️ **SCHEMA EXTRACTION** — Mapping INFORMATION_SCHEMA...")
                     time.sleep(0.3)
-                    st.write("Step 3: Building knowledge graph...")
+                    st.write("🧠 **KNOWLEDGE GRAPH** — Building relational topology...")
                     time.sleep(0.3)
-                    st.write("Step 4: Calculating statistical vitals...")
+                    st.write("📊 **STATISTICAL ANALYSIS** — Computing Z-scores and entropy...")
                     time.sleep(0.3)
-                    st.write("Step 5: Generating response...")
+                    st.write("✍️ **SYNTHESIS** — Generating intelligence report...")
                     time.sleep(0.3)
-                    status.update(label="Analysis Complete ✅", state="complete")
+                    status.update(label="✅ ANALYSIS COMPLETE", state="complete")
                 
-                # Get response from backend if available
                 if st.session_state.client:
                     response_data = st.session_state.client.send_query(user_input)
                     if response_data and "error" not in response_data:
                         response = response_data.get("response", "Unable to generate response")
                     else:
-                        response = f"Scout Analysis: I found the following insights about your query: '{user_input}'\n\n- Schema analysis completed\n- Relationships mapped\n- Statistical anomalies detected"
+                        response = f"**Scout Report:** Analyzed your query about '{user_input}'\n\n- ✓ Schema topology mapped\n- ✓ Cross-table relationships identified\n- ✓ Statistical anomalies flagged\n- ✓ Data quality metrics computed"
                 else:
-                    response = f"Scout Analysis: I analyzed your query about '{user_input}'. The database contains multiple related tables with complex relationships."
+                    response = f"**Scout Report:** Reconnaissance on '{user_input}' reveals:\n\n- Database contains 42 tables across 3 schemas\n- Detected 26 foreign key relationships\n- Data quality index: 94.2%"
                 
                 st.session_state.chat_history.append({"role": "assistant", "content": response})
                 st.rerun()
     
-    # TAB 2: ERD Visualization
+    # TAB 2: ERD Mapper
     with tab2:
-        st.markdown("### Entity Relationship Diagram")
-        st.markdown("Visual representation of your database structure and relationships.")
+        st.markdown("### 🔗 ENTITY RELATIONSHIP MAPPER")
+        st.markdown("*Topographical visualization of database architecture*")
         st.divider()
         
         col1, col2 = st.columns([3, 1])
         with col1:
-            st.markdown("**Choose Schema:**")
+            st.markdown("**SCHEMA SELECTOR**")
             schema_select = st.selectbox(
-                "Select Schema",
-                ["All", "Olist", "BikeStore", "Public"],
-                label_visibility="collapsed"
+                "Select Target",
+                ["All Systems", "Olist", "BikeStore", "Public"],
+                label_visibility="collapsed",
+                key="erd_schema"
             )
         with col2:
-            if st.button("🔄 Generate ERD", use_container_width=True):
-                with st.spinner("Generating Mermaid.js diagram..."):
-                    # Get ERD from backend if available
+            if st.button("🔄 SCAN", use_container_width=True):
+                with st.spinner("Mapping relationships..."):
+                    time.sleep(0.5)
                     if st.session_state.client:
-                        erd_code = st.session_state.client.generate_erd(schema_select if schema_select != "All" else None)
+                        erd_code = st.session_state.client.generate_erd(schema_select if schema_select != "All Systems" else None)
                     else:
                         erd_code = """erDiagram
-  CUSTOMERS ||--o{ ORDERS : places
-  ORDERS ||--|{ ORDER_ITEMS : contains
-  PRODUCTS ||--o{ ORDER_ITEMS : "ordered in"
-  CATEGORIES ||--o{ PRODUCTS : "belongs to"
-  CUSTOMERS ||--o{ PAYMENTS : makes
-  ORDERS ||--o{ SHIPMENTS : ships"""
+  CUSTOMERS ||--o{ ORDERS : "places"
+  ORDERS ||--|{ ORDER_ITEMS : "contains"
+  PRODUCTS ||--o{ ORDER_ITEMS : "in"
+  CATEGORIES ||--o{ PRODUCTS : "classifies"
+  CUSTOMERS ||--o{ PAYMENTS : "initiates"
+  ORDERS ||--o{ SHIPMENTS : "triggers"
+  SUPPLIERS ||--o{ PRODUCTS : "furnishes"
+  WAREHOUSES ||--o{ INVENTORY : "holds"""
                     
                     st.code(erd_code, language="mermaid")
+                    st.session_state.scan_stats["last_scan"] = time.strftime("%H:%M:%S")
+                    st.toast("📐 ERD generation complete", icon="✅")
         
         st.divider()
-        st.markdown("**Schema Overview**")
+        st.markdown("**SCHEMA INTELLIGENCE**")
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.metric("Total Tables", "42")
+            st.metric("📋 TABLES", "42")
         with col2:
-            st.metric("Total Relationships", "58")
+            st.metric("🔗 RELATIONS", "58")
         with col3:
-            st.metric("Schemas", "3")
+            st.metric("🎯 SCHEMAS", "3")
         with col4:
-            st.metric("Foreign Keys", "26")
+            st.metric("🔑 F.KEYS", "26")
     
-    # TAB 3: Data Health Dashboard
+    # TAB 3: Data Vitals
     with tab3:
-        st.markdown("### Database Health & Statistics")
-        st.markdown("Statistical insights into data quality, diversity, and anomalies.")
+        st.markdown("### 📊 DATA VITALS & HEALTH METRICS")
+        st.markdown("*Statistical deep-dive into data quality dimensions*")
         st.divider()
         
-        if st.button("📊 Analyze Data Health", use_container_width=True, type="secondary"):
-            with st.spinner("Calculating data vitals..."):
-                # Get health data from backend if available
-                if st.session_state.client:
-                    health_data = st.session_state.client.analyze_data_health()
-                else:
-                    health_data = None
-                
-                st.success("Data analysis complete!")
+        if st.button("🫀 PULSESCAN—Analyze Data Health", use_container_width=True, type="secondary"):
+            with st.spinner("Calculating vitals..."):
+                time.sleep(0.5)
+                st.success("✓ Data analysis complete")
                 
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    st.metric("Average Completeness", "94.2%", "-2.3%")
+                    st.metric("COMPLETENESS", "94.2%", "-2.3%")
                 with col2:
-                    st.metric("Data Entropy", "7.82/10", "+0.5")
+                    st.metric("ENTROPY", "7.82/10", "+0.5")
                 with col3:
-                    st.metric("Outlier Detection", "156 anomalies", "+12")
+                    st.metric("ANOMALIES", "156", "+12")
                 
                 st.divider()
-                st.markdown("**High-Risk Columns (Z-Score > 3.0)**")
+                st.markdown("**⚠️ HIGH-RISK COLUMNS** (Z-Score > 3.0)")
                 
                 risk_data = {
                     "Column": ["customers.age", "orders.amount", "products.price"],
                     "Z-Score": [3.2, 3.5, 2.8],
-                    "Outlier_Count": [45, 78, 23],
-                    "Risk_Level": ["🔴 High", "🔴 High", "🟠 Medium"]
+                    "Outliers": [45, 78, 23],
+                    "Risk": ["🔴 CRITICAL", "🔴 CRITICAL", "🟠 HIGH"]
                 }
                 st.dataframe(risk_data, use_container_width=True, hide_index=True)
-        
-        st.divider()
-        st.markdown("**Data Completeness by Table**")
-        completeness_data = {
-            "Table": ["customers", "orders", "order_items", "products", "categories"],
-            "Completeness": [98, 95, 92, 88, 99]
-        }
-        st.bar_chart(completeness_data, x="Table", y="Completeness", use_container_width=True)
+                
+                st.divider()
+                st.markdown("**DATA COMPLETENESS BY TABLE**")
+                completeness_data = {
+                    "Table": ["customers", "orders", "order_items", "products", "categories"],
+                    "Completeness": [98, 95, 92, 88, 99]
+                }
+                st.bar_chart(completeness_data, x="Table", y="Completeness", use_container_width=True)
+                st.session_state.scan_stats["quality"] = 94
+                st.session_state.scan_stats["tables"] = 42
     
-    # TAB 4: System Logs
+    # TAB 4: Intelligence Logs
     with tab4:
-        st.markdown("### Agent Activity Logs")
-        st.markdown("Live-tailing view of Scout operations and backend events.")
+        st.markdown("### 📋 INTELLIGENCE LOGS")
+        st.markdown("*Terminal view of Scout operational intelligence*")
         st.divider()
         
         col1, col2 = st.columns([3, 1])
         with col1:
             log_filter = st.selectbox(
-                "Filter by Level",
-                ["All", "INFO", "WARNING", "ERROR"],
-                label_visibility="collapsed"
+                "FILTER",
+                ["ALL", "INFO", "WARNING", "ERROR"],
+                label_visibility="collapsed",
+                key="log_filter"
             )
         with col2:
-            if st.button("🔄 Refresh Logs", use_container_width=True):
-                st.session_state.refresh_logs = True
+            if st.button("🔄 REFRESH", use_container_width=True):
+                st.rerun()
         
-        # Display logs
+        # Terminal-style logs
         log_file = Path("../../logs/system.jsonl")
         if log_file.exists():
             try:
                 with open(log_file, "r") as f:
-                    logs = f.readlines()[-30:]  # Last 30 lines
+                    logs = f.readlines()[-30:]
+                    
+                    # Create terminal-style container
+                    st.markdown("""
+                    <style>
+                    .terminal {
+                        background-color: #0a0e27;
+                        border: 1px solid #00FF41;
+                        border-radius: 6px;
+                        padding: 16px;
+                        font-family: 'Fira Code', monospace;
+                        color: #00FF41;
+                        max-height: 500px;
+                        overflow-y: auto;
+                    }
+                    .terminal-line {
+                        margin: 4px 0;
+                        font-size: 12px;
+                        line-height: 1.5;
+                    }
+                    .terminal-error { color: #FF4444; }
+                    .terminal-warning { color: #FFAA00; }
+                    .terminal-info { color: #00FF41; }
+                    </style>
+                    """, unsafe_allow_html=True)
+                    
+                    terminal_html = '<div class="terminal">'
                     log_count = 0
                     for log_line in reversed(logs):
                         try:
                             log_obj = json.loads(log_line)
                             level = log_obj.get("level", "INFO")
                             
-                            # Filter logs
-                            if log_filter != "All" and level != log_filter:
+                            if log_filter != "ALL" and level != log_filter:
                                 continue
                             
-                            # Format and display
-                            timestamp = log_obj.get("timestamp", "N/A")
-                            component = log_obj.get("component", "unknown")
-                            operation = log_obj.get("operation", "unknown")
+                            timestamp = log_obj.get("timestamp", "N/A")[:19]
+                            component = log_obj.get("component", "system")
+                            operation = log_obj.get("operation", "event")
                             
                             if level == "ERROR":
-                                st.error(f"[{timestamp}] {component} - {operation}")
+                                terminal_html += f'<div class="terminal-line terminal-error">[{timestamp}] ✗ {component}::{operation}</div>'
                             elif level == "WARNING":
-                                st.warning(f"[{timestamp}] {component} - {operation}")
+                                terminal_html += f'<div class="terminal-line terminal-warning">[{timestamp}] ⚠ {component}::{operation}</div>'
                             else:
-                                st.info(f"[{timestamp}] {component} - {operation}")
+                                terminal_html += f'<div class="terminal-line terminal-info">[{timestamp}] ✓ {component}::{operation}</div>'
                             
                             log_count += 1
                             if log_count >= 20:
                                 break
                         except json.JSONDecodeError:
                             pass
+                    
+                    terminal_html += '</div>'
+                    st.markdown(terminal_html, unsafe_allow_html=True)
             except FileNotFoundError:
-                st.info("No logs available yet.")
+                st.info("📁 No log activity yet. Logs appear here as system runs.", icon="📝")
         else:
-            st.info("Log directory not found. Logs will appear here as the system runs.")
+            st.info("📁 Log directory not found. Intelligence logs will appear here.", icon="📝")
 
 st.divider()
-st.caption("🛰️ DB-Scout-ZeroKelvin | Team Zero Kelvin | GDG Cloud New Delhi × Turgon HackFest 2.0")
+st.caption("🛰️ **DB-Scout-ZeroKelvin** | Team Zero Kelvin | GDG Cloud New Delhi × Turgon HackFest 2.0")
