@@ -4,6 +4,7 @@
 
 DB-Scout-ZeroKelvin transforms "data graveyards" into searchable knowledge bases. By leveraging the Model Context Protocol (MCP) and Agentic RAG, it autonomously scouts legacy databases, maps hidden relationships, and provides deep statistical intelligence—all while keeping your data private and secure.
 
+![alt text](Doc/Gemini_Generated_Image_b3jjweb3jjweb3jj.png)
 ## 🚀 Core Pillars
 
 **Standardized Recon (MCP Bridge):** Uses FastMCP to establish a secure, standardized bridge to SQL Server, PostgreSQL, and Snowflake.
