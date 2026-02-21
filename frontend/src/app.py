@@ -12,8 +12,7 @@ def log_action(action, details):
     }
     # In production, ensure thread safety or use a logging library
     with open("../logs/frontend.jsonl", "a") as f:
-        f.write(json.dumps(entry) + "
-")
+        f.write(json.dumps(entry) + "")
 
 st.set_page_config(page_title="Intelligent Data Dictionary", layout="wide")
 
