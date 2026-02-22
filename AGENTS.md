@@ -1,57 +1,51 @@
-# Intelligent Data Dictionary Agent
+# Intelligent Data Dictionary Agent - Global Agent Instructions
 
-## Project Overview
-**Goal:** Build an intelligent agent that connects to enterprise databases, extracts metadata, performs quality analysis, and provides a conversational interface for data discovery.
+## 1. Project Context
+This project is an "Intelligent Data Dictionary Agent" for HackFest 2.0. It connects to PostgreSQL databases, extracts schema metadata using FastMCP, processes it via LangGraph, and visualizes it in a Streamlit frontend.
 
-**Tech Stack:**
-- **Frontend:** Streamlit
-- **Backend:** Python, LangGraph, FastMCP, Pandas Profiling
-- **Database Support:** PostgreSQL, SQL Server, Snowflake
-- **LLM:** OpenAI / Anthropic
+**Core Components:**
+- **Frontend:** Streamlit-based UI (`/frontend`).
+- **Backend:** Python-based FastMCP server & LangGraph orchestration (`/backend`).
+- **Database:** PostgreSQL (existing container `hackfest-postgres-final`).
 
-## Global Setup
-1. **Python Environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Windows: venv\Scripts\activate
-   ```
-2. **Install Dependencies:**
-   ```bash
-   pip install -r backend/requirements.txt
-   pip install -r frontend/requirements.txt
-   ```
-3. **Environment Variables:**
-   - Copy `.env.example` to `.env`
-   - Configure database credentials and LLM API keys.
+## 2. Global Conventions
+- **Code Style:** Python (PEP 8), TypeScript/JavaScript (Standard).
+- **Paths:** Always use relative paths from the project root or component root.
+- **Environment:** Use `.env` files for configuration.
+- **Documentation:** Maintain `README.md` and `AGENTS.md` in each component.
 
-## Global Conventions
-- **Code Style:** Black (Python), Flake8.
-- **Commits:** Conventional Commits (e.g., `feat: add snowflake adapter`, `fix: metadata extraction bug`).
-- **Pathing:** Use absolute paths or project-root relative paths.
+## 3. Setup & Build
+- **Prerequisites:** Docker, Python 3.10+, Node.js (if applicable).
+- **Global Build:** `docker-compose up --build`
 
-## Structured Logging Conventions
-All components must log to `/logs/` in JSON lines (`.jsonl`) format.
+## 4. Logging Conventions
+All agent actions must be logged in structured JSON format to `/logs/`.
 
-### Log File Names
-- `agent_runs.jsonl`: Core agent workflow execution.
-- `ingestion.jsonl`: Database metadata extraction tasks.
-- `processing.jsonl`: Data quality and statistical analysis.
-- `system.jsonl`: General system events and errors.
+**File Naming:**
+- `agent_runs.jsonl`: General agent activity.
+- `ingestion.jsonl`: Schema extraction logs.
+- `processing.jsonl`: Analysis and processing logs.
+- `error.jsonl`: Error logs.
 
-### Log Entry Structure
-Each log entry must be a valid JSON object with the following schema:
+**Log Format (JSON Lines):**
+Each line must be a valid JSON object with the following fields:
+- `timestamp`: ISO8601 string (e.g., "2023-10-27T10:00:00Z").
+- `component`: "frontend", "backend", "ingestion-agent", etc.
+- `level`: "INFO", "WARNING", "ERROR".
+- `operation`: The specific action being performed (e.g., "extract_schema", "generate_erd").
+- `steps`: List of steps taken (optional but recommended for complex ops).
+- `outputs`: Result of the operation.
+- `error`: Error message (if applicable).
+
+**Example:**
 ```json
-{
-  "timestamp": "2026-02-21T10:00:00Z",  // ISO8601
-  "component": "backend.adapter.snowflake", // or "frontend.chat"
-  "level": "INFO", // INFO, WARN, ERROR, DEBUG
-  "operation": "extract_schema",
-  "inputs": { "table": "orders" },
-  "steps": ["connected", "queried_information_schema", "closed"],
-  "outputs": { "column_count": 15 },
-  "error": null
-}
+{"timestamp": "2023-10-27T10:00:00Z", "component": "backend", "level": "INFO", "operation": "list_schemas", "outputs": ["public", "sales", "production"]}
+{"timestamp": "2023-10-27T10:05:00Z", "component": "ingestion-agent", "level": "ERROR", "operation": "connect_db", "error": "Connection refused"}
 ```
 
-### Reading Logs
-Agents should parse these logs to understand past execution states or debug failures.
+## 5. Development Workflow
+1.  **Read:** Always read `AGENTS.md` in the directory you are working in.
+2.  **Plan:** outline your changes.
+3.  **Implement:** Write code.
+4.  **Verify:** Run tests (see component `AGENTS.md`).
+5.  **Log:** Log your major actions to `logs/agent_runs.jsonl`.

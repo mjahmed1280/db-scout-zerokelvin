@@ -1,40 +1,82 @@
 # 🛰️ DB-Scout-ZeroKelvin
 
-**The Agentic Reconnaissance Layer for Enterprise Data**
+**The Intelligent Data Dictionary & Agentic Reconnaissance Layer**
 
-DB-Scout-ZeroKelvin transforms "data graveyards" into searchable knowledge bases. By leveraging the Model Context Protocol (MCP) and Agentic RAG, it autonomously scouts legacy databases, maps hidden relationships, and provides deep statistical intelligence—all while keeping your data private and secure.
+DB-Scout-ZeroKelvin transforms legacy databases into searchable knowledge bases. By leveraging the **Model Context Protocol (MCP)** and **Vertex AI RAG Engine**, it autonomously scouts legacy databases, maps hidden relationships, and provides deep statistical intelligence—all while keeping your data private and secure.
 
+Propesed Solution :
 ![alt text](Doc/Gemini_Generated_Image_b3jjweb3jjweb3jj.png)
+
+Final UI: 
+![alt text](image.png)
+![alt text](Frountend/image-1.png)
+![alt text](Frountend/image-2.png)
+
+
+
+
 ## 🚀 Core Pillars
 
-**Standardized Recon (MCP Bridge):** Uses FastMCP to establish a secure, standardized bridge to SQL Server, PostgreSQL, and Snowflake.
+**Standardized Recon (MCP Bridge):** Uses **FastMCP** to establish a secure, standardized bridge to SQL Server, PostgreSQL, and Snowflake, exposing schemas directly to the LLM.
 
-**Topographical Mapping (In-Memory Graph):** Navigates complex table relationships using NetworkX to find optimal join paths and lineage.
+**Agentic RAG (Vertex AI):** Leverages **Vertex AI RAG Engine** and **Google ADK** to provide a conversational interface that understands your database's unique context and business logic.
 
-**Deep Intel (Statistical Engine):** Beyond basic schema info, the Scout calculates Z-Scores for outlier detection and Shannon Entropy for data diversity.
+**Deep Intel (Statistical Engine):** Calculates Z-Scores for outlier detection, Shannon Entropy for data diversity, and completeness metrics to assess data health.
 
-**Zero-Trust Security:** Local-first transport layer ensures database credentials and PII never leave your private environment.
+**Zero-Trust Security:** A local-first transport layer and Read-Only enforcement ensure database credentials and PII never leave your private environment.
 
-## 🏗️ Repository Structure
+## 📊 System Architecture
 
-- **/mcp_server**: The "FastMCP" bridge connecting LLMs to the data terrain.
-- **/scout_brain**: Core LangGraph logic, Agentic RAG orchestration, and NetworkX graph traversal.
-- **/stats_engine**: Statistical analysis modules (Z-Scores, Entropy, Completeness).
-- **/interface**: Streamlit-based "Scout Command Center" for natural language interrogation.
-- **/reports**: Automated output of "Self-Healing" Markdown and JSON documentation.
-- **/docs**: Architecture documentation and design specifications.
-- **/logs**: Structured JSON logs for agent activities.
-- **/scripts**: Helper scripts for setup and deployment.
+```mermaid
+graph TD
+    Client[Streamlit Frontend]
+    API[FastAPI Backend]
+    MCP[MCP Server / PostgreSQL]
+    GCS[Google Cloud Storage]
+    Vertex[Vertex AI RAG Engine]
+    Gemini[Gemini 2.0 Flash]
+    ADK[Google ADK Agent]
+
+    Client -- "Analysis & Chat" --> API
+    API -- "Extract Metadata" --> MCP
+    API -- "Store Artifacts" --> GCS
+    API -- "Ingest Context" --> Vertex
+    API -- "Orchestrate" --> ADK
+    ADK -- "Reasoning" --> Gemini
+```
+
+## 🛠️ Tech Stack
+
+| Component | Technology |
+| :--- | :--- |
+| **Orchestration** | **LangGraph** & Google ADK |
+| **AI Engine** | **Vertex AI** (Gemini 2.0 Flash) |
+| **RAG Layer** | **Vertex AI RAG Engine** |
+| **Connectivity** | **FastMCP** (Model Context Protocol) |
+| **Backend** | **FastAPI** (Python 3.10+) |
+| **Frontend** | **Streamlit** |
+| **Storage** | **Google Cloud Storage (GCS)** |
+| **Database** | PostgreSQL (Dockerized) |
+
+## Repository Structure
+
+- **`/backend`**: FastAPI application, LangGraph agents, and MCP server logic.
+  - `/src`: Core API and RAG utilities.
+  - `/agents`: LangGraph workflow definitions and Gemini wrappers.
+  - `/tests`: MCP connectivity and API test suites.
+- **`/interface`**: Streamlit-based "Scout Command Center" for natural language interrogation.
+- **`/Doc`**: Detailed architecture, setup guides, and system narratives.
+- **`/logs`**: Structured JSON logs for agent activities and API runs.
 
 ## 🛠️ Quick Start
 
-### 1. Initialize the Scout
+### 1. Environment Setup
 ```bash
 # Create and activate environment
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Install the Recon Stack
+# Install dependencies
 pip install -r requirements.txt
 ```
 

@@ -6,3 +6,6 @@ logs/*.jsonl
 .DS_Store
 *.csv
 .vscode
+.env.example
+gcp-gcs-fb.json
+*.json
