@@ -1,8 +1,8 @@
-# 🛰️ DB-Scout-ZeroKelvin
+# 🛰️ DB-Scout
 
 **The Intelligent Data Dictionary & Agentic Reconnaissance Layer**
 
-DB-Scout-ZeroKelvin transforms legacy databases into searchable knowledge bases. By leveraging the **Model Context Protocol (MCP)** and **Vertex AI RAG Engine**, it autonomously scouts legacy databases, maps hidden relationships, and provides deep statistical intelligence—all while keeping your data private and secure.
+DB-Scout transforms legacy databases into searchable knowledge bases. By leveraging the **Model Context Protocol (MCP)** and **Vertex AI RAG Engine**, it autonomously scouts legacy databases, maps hidden relationships, and provides deep statistical intelligence—all while keeping your data private and secure.
 
 Propesed Solution :
 ![alt text](Doc/Gemini_Generated_Image_b3jjweb3jjweb3jj.png)
@@ -12,6 +12,8 @@ Final UI:
 ![alt text](Frountend/image-1.png)
 ![alt text](Frountend/image-2.png)
 
+Built for HackFest 2.0
+![alt text](image-1.png)
 
 
 
